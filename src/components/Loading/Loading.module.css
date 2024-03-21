@@ -1,0 +1,19 @@
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+    height: 100vh;
+}
+
+.dark-theme {
+    height: 100vh;
+    color: #ffffff;
+    background-color: #161515;
+}
+
+.light-theme {
+    color: #161515;
+    background-color: #ffffff;
+}
