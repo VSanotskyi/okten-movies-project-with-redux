@@ -1,14 +1,15 @@
 import {ChangeEvent, useEffect, useState} from 'react';
 import {useSearchParams} from 'react-router-dom';
 
-import {getAllMoviesThunk, selectMovies, selectTotalPage} from '../store/movies';
-import {useAppDispatch, useAppSelector} from '../hooks';
-import {List, MovieItem, PaginationContainer} from '../components';
+import {getAllMoviesThunk} from '../store/movies';
+import {useAppDispatch, useMovies} from '../hooks';
+import {List, MovieItem, PaginationContainer, Error} from '../components';
 
 export default function MoviePages() {
     const dispatch = useAppDispatch();
-    const movies = useAppSelector(selectMovies);
-    const totalPage = useAppSelector(selectTotalPage);
+    const movies = useMovies().items;
+    const totalPage = useMovies().totalPage;
+    const error = useMovies().error;
 
     const [paramsPage, setParamsPage] = useSearchParams({page: '1'});
     const [page, setPage] = useState(+(paramsPage.get('page')));
@@ -40,6 +41,9 @@ export default function MoviePages() {
                     page={page}
                     handleChange={handleChange}
                 />
+            }
+            {
+                error && <Error message={typeof error === 'string' ? error : ''}/>
             }
         </>
     );

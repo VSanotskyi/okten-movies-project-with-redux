@@ -9,12 +9,12 @@ const movieDetails = '/movie';
 const defaultUrlImage = 'https://image.tmdb.org/t/p/w200/';
 
 export {
-  baseURL,
-  API_KEY,
-  movies,
-  genres,
-  moviesByGenre,
-  moviesBySearch,
-  movieDetails,
-  defaultUrlImage,
+    baseURL,
+    API_KEY,
+    movies,
+    genres,
+    moviesByGenre,
+    moviesBySearch,
+    movieDetails,
+    defaultUrlImage,
 };

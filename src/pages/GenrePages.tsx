@@ -1,13 +1,10 @@
 import {ChangeEvent, useEffect, useState} from 'react';
 import {useLocation, useSearchParams} from 'react-router-dom';
 
-import {List, MovieItem, PaginationContainer} from '../components';
-import {useAppDispatch, useAppSelector} from '../hooks';
+import {Error, List, MovieItem, PaginationContainer} from '../components';
+import {useAppDispatch, useMovies} from '../hooks';
 import {
     getMoviesByGenreThunk,
-    selectMovies,
-    selectResPage,
-    selectTotalPage,
     togglePage,
 } from '../store/movies';
 
@@ -15,9 +12,10 @@ export default function GenrePages() {
     const {pathname} = useLocation();
     const dispatch = useAppDispatch();
 
-    const movies = useAppSelector(selectMovies);
-    const totalPage = useAppSelector(selectTotalPage);
-    const resPage = useAppSelector(selectResPage);
+    const movies = useMovies().items;
+    const totalPage = useMovies().totalPage;
+    const resPage = useMovies().resPage;
+    const error = useMovies().error;
 
     const [paramsPage, setParamsPage] = useSearchParams({page: '1'});
     const [page, setPage] = useState(+(paramsPage.get('page')));
@@ -30,7 +28,6 @@ export default function GenrePages() {
     const genreId = pathname.split('/')[pathname.split('/').length - 1];
 
     useEffect(() => {
-        console.log(resPage);
         resPage && setPage(1);
     }, [resPage]);
 
@@ -56,6 +53,9 @@ export default function GenrePages() {
                     page={page}
                     handleChange={handleChange}
                 />
+            }
+            {
+                error && <Error message={typeof error === 'string' ? error : ''}/>
             }
         </>
     );

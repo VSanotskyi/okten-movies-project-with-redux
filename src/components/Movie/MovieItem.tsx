@@ -10,9 +10,9 @@ import {
 } from '@mui/material';
 
 import {IMovie} from '../../interfaces';
-import css from './MovieItem.module.css';
 import defaultImage from '../../defaultImage/default-image.jpg';
 import {defaultUrlImage} from '../../constants';
+import css from './MovieItem.module.css';
 
 interface IProps {
     item: IMovie;
@@ -28,7 +28,7 @@ const MovieItem: FC<IProps> = ({item}) => {
     const checkUrl = urlImg.split('/').slice(-1).toString() === 'null';
 
     const handleClick = () => {
-        navigate(`/details/${id}`);
+        navigate(`/movies/details/${id}`);
     };
 
     return (

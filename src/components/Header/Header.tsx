@@ -7,28 +7,30 @@ import {
     Toolbar,
     Typography,
     Button,
-    Input,
-    InputAdornment,
+    Paper,
+    IconButton, InputBase,
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchIcon from '@mui/icons-material/Search';
 
 import {IGenre} from '../../interfaces';
-import {useAppDispatch, useAppSelector} from '../../hooks';
+import {useAppDispatch, useGenres, useTheme} from '../../hooks';
 import {List, GenreItem} from '../../components';
-import {getAllGenresThunk, selectGenres, togglePage} from '../../store/movies';
-import {selectTheme, toggleTheme} from '../../store/theme';
+import {togglePage} from '../../store/movies';
+import {toggleTheme} from '../../store/theme';
+import {getAllGenresThunk} from '../../store/genres';
 import css from './Header.module.css';
 
 const Header = () => {
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const genres = useAppSelector(selectGenres);
+
+    const genres = useGenres().items;
 
     const [showSearch, setShowSearch] = useState(false);
     const [search, setSearch] = useState<string>('');
-    const navigate = useNavigate();
 
-    const theme = useAppSelector(selectTheme);
+    const theme = useTheme().theme;
     const currentTheme = theme ? 'dark-theme' : 'light-theme';
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +40,7 @@ const Header = () => {
     const handleSubmit = () => {
         if (search.length < 1) return;
         dispatch(togglePage(true));
-        navigate(`/search/${search}`);
-        setShowSearch(prev => !prev);
+        navigate(`/movies/search/${search}`);
         setSearch('');
     };
 
@@ -56,8 +57,8 @@ const Header = () => {
     }, [dispatch]);
 
     return (
-        <Box sx={{flexGrow: 1}}>
-            <AppBar position="static">
+        <Box>
+            <AppBar position="sticky">
                 <Toolbar>
                     <Typography variant="h6"
                                 component="div"
@@ -67,25 +68,9 @@ const Header = () => {
                               to={'/'}
                         >Movies</Link>
                     </Typography>
-                    {showSearch && <Typography variant="h6"
-                                               component="div"
-                                               sx={{flexGrow: 1}}
-                    >
-                        <Input
-                            onChange={handleChange}
-                            value={search}
-                            id="input-with-icon-adornment"
-                            autoFocus={true}
-                        />
-                        <Button onClick={handleSubmit}>
-                            <InputAdornment position="start">
-                                <SearchIcon className={css[currentTheme]}/>
-                            </InputAdornment>
-                        </Button>
-                    </Typography>}
-                    {!showSearch && <Button onClick={toggleSearch}>
+                    <Button onClick={toggleSearch}>
                         <SearchIcon className={css[currentTheme]}/>
-                    </Button>}
+                    </Button>
                     <Button onClick={handleChangeTheme}>
                             <span className={css[currentTheme]}>
                                 {currentTheme}
@@ -94,8 +79,7 @@ const Header = () => {
                     <AccountCircleIcon/>
                 </Toolbar>
             </AppBar>
-
-            {genres &&
+            {genres.length > 0 &&
                 <Box>
                     <List items={genres}
                           renderItem={((item: IGenre) => <GenreItem key={item.id}
@@ -104,6 +88,28 @@ const Header = () => {
                     />
                 </Box>
             }
+            {showSearch &&
+                <Box className={css.searchBox}>
+                    <Paper
+                        component="form"
+                        sx={{p: '2px 4px', display: 'flex', alignItems: 'center', width: 300}}
+                    >
+                        <InputBase
+                            sx={{ml: 1, flex: 1, color: 'success'}}
+                            placeholder="Search Movies"
+                            autoFocus={true}
+                            onChange={handleChange}
+                            value={search}
+                        />
+                        <IconButton type="button"
+                                    sx={{p: '10px'}}
+                                    aria-label="search"
+                                    onClick={handleSubmit}
+                        >
+                            <SearchIcon/>
+                        </IconButton>
+                    </Paper>
+                </Box>}
         </Box>
     );
 };

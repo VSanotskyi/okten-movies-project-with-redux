@@ -1,15 +1,16 @@
 import {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 
-import {DetailsItem, Loading} from '../components';
-import {useAppDispatch, useAppSelector} from '../hooks';
-import {getMovieDetailsThunk, selectIsLoading, selectMovieDetails} from '../store/movies';
+import {DetailsItem, Error} from '../components';
+import {useAppDispatch, useMovies} from '../hooks';
+import {getMovieDetailsThunk} from '../store/movies';
 
 export default function DetailsPages() {
-    const dispatch = useAppDispatch();
-    const movieDetails = useAppSelector(selectMovieDetails);
-    const isLoading = useAppSelector(selectIsLoading);
     const {pathname} = useLocation();
+    const dispatch = useAppDispatch();
+
+    const movieDetails = useMovies().details;
+    const error = useMovies().error;
 
     const movieId = pathname.split('/')[pathname.split('/').length - 1];
 
@@ -19,13 +20,12 @@ export default function DetailsPages() {
         dispatch(getMovieDetailsThunk({movieId}));
     }, [movieId, dispatch]);
 
-    console.log(movieDetails);
-
     return (
         <div>
-            {isLoading && <Loading/>}
             {movieDetails && <DetailsItem item={movieDetails}/>}
-
+            {
+                error && <Error message={typeof error === 'string' ? error : ''}/>
+            }
         </div>
     );
 };

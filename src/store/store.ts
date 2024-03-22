@@ -10,6 +10,7 @@ import {
 } from 'redux-persist/es/constants';
 
 import {moviesReducer} from './movies';
+import {genresReducer} from './genres';
 import {themeReducer} from './theme';
 
 const persistConfig = {
@@ -22,6 +23,7 @@ const persistedReducer = persistReducer(persistConfig, themeReducer);
 const store = configureStore({
     reducer: {
         movies: moviesReducer,
+        genres: genresReducer,
         theme: persistedReducer,
     },
     middleware: getDefaultMiddleware =>

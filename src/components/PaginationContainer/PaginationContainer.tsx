@@ -2,8 +2,7 @@ import React, {ChangeEvent, FC} from 'react';
 
 import {Box, Stack, Pagination, PaginationItem} from '@mui/material';
 
-import {useAppSelector} from '../../hooks';
-import {selectTheme} from '../../store/theme';
+import {useTheme} from '../../hooks';
 import css from './PaginationContainer.module.css';
 
 interface IProps {
@@ -13,7 +12,7 @@ interface IProps {
 }
 
 const PaginationContainer: FC<IProps> = ({totalPage, page, handleChange}) => {
-    const theme = useAppSelector(selectTheme);
+    const theme = useTheme();
     const currentTheme = theme ? 'dark-theme' : 'light-theme';
 
     return (

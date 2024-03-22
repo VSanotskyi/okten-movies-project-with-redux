@@ -1,22 +1,21 @@
 import {ChangeEvent, useEffect, useState} from 'react';
 import {useLocation, useSearchParams} from 'react-router-dom';
 
-import {useAppDispatch, useAppSelector} from '../hooks';
+import {useAppDispatch, useMovies} from '../hooks';
 import {
-    getMoviesBySearchThunk,
-    selectMovies,
-    selectResPage,
-    selectTotalPage, togglePage,
+    getMoviesBySearchThunk, togglePage,
 } from '../store/movies';
-import {List, MovieItem, PaginationContainer} from '../components';
+import {Error, List, MovieItem, PaginationContainer} from '../components';
 
 export default function SearchPage() {
     const {pathname} = useLocation();
     const dispatch = useAppDispatch();
 
-    const movies = useAppSelector(selectMovies);
-    const totalPage = useAppSelector(selectTotalPage);
-    const resPage = useAppSelector(selectResPage);
+    const movies = useMovies().items;
+    const totalPage = useMovies().totalPage;
+    const resPage = useMovies().resPage;
+    const error = useMovies().error;
+    const isLoading = useMovies().isLoading;
 
     const [paramsPage, setParamsPage] = useSearchParams({page: '1'});
     const [page, setPage] = useState(+(paramsPage.get('page')));
@@ -48,12 +47,19 @@ export default function SearchPage() {
                           />}
                 />
             }
-            {totalPage &&
+            {totalPage > 1 &&
                 <PaginationContainer
                     totalPage={totalPage}
                     page={page}
                     handleChange={handleChange}
                 />
+            }
+            {
+                movies.length < 1 && !error && !isLoading &&
+                <Error message={`"${search}" not found`}/>
+            }
+            {
+                error && <Error message={typeof error === 'string' ? error : ''}/>
             }
         </>
     );

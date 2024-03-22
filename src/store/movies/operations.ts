@@ -2,25 +2,13 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AxiosError} from 'axios';
 
 import {api} from '../../services';
-import {IDetails, IGenres, IMoviesRes} from '../../interfaces';
+import {IDetails, IMoviesRes} from '../../interfaces';
 
 const getAllMoviesThunk = createAsyncThunk<IMoviesRes, { page: number }>(
     'moviesSlice/getMovies',
     async ({page}, {rejectWithValue}) => {
         try {
             return await api.getAllMovies(page);
-        } catch (error) {
-            const e = error as AxiosError;
-            return rejectWithValue(e.message);
-        }
-    },
-);
-
-const getAllGenresThunk = createAsyncThunk<IGenres, void>(
-    'moviesSlice/getGenres',
-    async (_, {rejectWithValue}) => {
-        try {
-            return await api.getAllGenres();
         } catch (error) {
             const e = error as AxiosError;
             return rejectWithValue(e.message);
@@ -65,7 +53,6 @@ const getMovieDetailsThunk = createAsyncThunk<IDetails, { movieId: string }>(
 );
 
 export {
-    getAllGenresThunk,
     getAllMoviesThunk,
     getMoviesByGenreThunk,
     getMoviesBySearchThunk,

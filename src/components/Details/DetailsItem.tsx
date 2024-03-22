@@ -66,13 +66,13 @@ const DetailsItem: FC<IProps> = ({item}) => {
                                 variant="h6"
                                 component="div"
                     >
-                        <p>{item?.overview}</p>
+                        <p>{item?.release_date}</p>
                     </Typography>
                     <Typography gutterBottom
                                 variant="h6"
                                 component="div"
                     >
-                        <p>{item?.release_date}</p>
+                        <p>{item?.overview}</p>
                     </Typography>
                 </CardContent>
             </Card>

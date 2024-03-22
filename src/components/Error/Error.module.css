@@ -1,8 +1,8 @@
 .box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-  min-height: 82vh;
+    min-height: 82vh;
 }

@@ -5,20 +5,15 @@ import {Box, Typography, Button} from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 
 import css from './Error.module.css';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-
-// import {selectResPage, togglePage} from '../../store/movies';
 
 interface IProps {
     message: string;
 }
 
 const Error: FC<IProps> = ({message}) => {
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const handleClick = () => {
-        // dispatch(resPage(true));
         navigate('/');
     };
 

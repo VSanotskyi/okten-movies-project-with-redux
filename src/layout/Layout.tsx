@@ -1,13 +1,12 @@
 import {Outlet} from 'react-router-dom';
 
 import {Header} from '../components';
-import {useAppSelector} from '../hooks';
-import {selectTheme} from '../store/theme';
+import {useTheme} from '../hooks';
+
 import css from './theme.module.css';
 
 export default function Layout() {
-    const theme = useAppSelector(selectTheme);
-
+    const theme = useTheme().theme;
     const currentTheme = theme ? 'dark-theme' : 'light-theme';
 
     return (

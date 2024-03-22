@@ -1,3 +1,4 @@
+
 .dark-theme {
     color: #161515;
 }
@@ -12,4 +13,11 @@
 
 .light-theme:hover {
     color: #161515;
+}
+
+.searchBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
 }

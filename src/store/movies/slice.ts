@@ -1,8 +1,7 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-import {IDetails, IGenre, IMovie} from '../../interfaces';
+import {IDetails, IMovie, IMoviesRes} from '../../interfaces';
 import {
-    getAllGenresThunk,
     getAllMoviesThunk,
     getMovieDetailsThunk,
     getMoviesByGenreThunk,
@@ -10,7 +9,6 @@ import {
 } from './operations';
 
 interface IState {
-    genreItems: IGenre[];
     movieItems: IMovie[];
     movieDetails: IDetails;
     total_page: number;
@@ -20,7 +18,6 @@ interface IState {
 }
 
 const initialState: IState = {
-    genreItems: [],
     movieItems: [],
     movieDetails: null,
     total_page: null,
@@ -29,9 +26,37 @@ const initialState: IState = {
     error: null,
 };
 
-const handlePending = (state: IState) => {
+// movies - pending fulfilled
+const handlePendingMovies = (state: IState) => {
     state.error = null;
     state.isLoading = true;
+    state.movieItems = [];
+    state.togglePage = null;
+};
+
+const handleFulfilledMovies = (state: IState, action: PayloadAction<IMoviesRes>) => {
+    state.isLoading = false;
+    state.error = null;
+    state.movieItems = action.payload.results;
+    state.total_page = action.payload.total_pages;
+};
+
+// details - pending fulfilled
+const handlePendingDetails = (state: IState) => {
+    state.error = null;
+    state.isLoading = true;
+    state.movieDetails = null;
+};
+
+const handleFulfilledDetails = (state: IState, action: PayloadAction<IDetails>) => {
+    state.isLoading = false;
+    state.error = null;
+    state.movieDetails = action.payload;
+};
+
+const handleRejected = (state: IState, action: PayloadAction<unknown>) => {
+    state.isLoading = false;
+    state.error = action.payload;
 };
 
 const moviesSlice = createSlice({
@@ -45,61 +70,20 @@ const moviesSlice = createSlice({
     extraReducers: builder => {
         builder
             // Pending
-            .addCase(getAllGenresThunk.pending, handlePending)
-            .addCase(getAllMoviesThunk.pending, handlePending)
-            .addCase(getMoviesByGenreThunk.pending, handlePending)
-            .addCase(getMoviesBySearchThunk.pending, handlePending)
-            .addCase(getMovieDetailsThunk.pending, handlePending)
+            .addCase(getAllMoviesThunk.pending, handlePendingMovies)
+            .addCase(getMoviesByGenreThunk.pending, handlePendingMovies)
+            .addCase(getMoviesBySearchThunk.pending, handlePendingMovies)
+            .addCase(getMovieDetailsThunk.pending, handlePendingDetails)
             // Fulfilled
-            .addCase(getAllMoviesThunk.fulfilled, (state, {payload}) => {
-                state.isLoading = false;
-                state.error = null;
-                state.movieItems = payload.results;
-                state.total_page = payload.total_pages;
-            })
-            .addCase(getMoviesByGenreThunk.fulfilled, (state, {payload}) => {
-                state.isLoading = false;
-                state.error = null;
-                state.movieItems = payload.results;
-                state.total_page = payload.total_pages;
-            })
-            .addCase(getMoviesBySearchThunk.fulfilled, (state, {payload}) => {
-                state.isLoading = false;
-                state.error = null;
-                state.movieItems = payload.results;
-                state.total_page = payload.total_pages;
-            })
-            .addCase(getMovieDetailsThunk.fulfilled, (state, {payload}) => {
-                state.isLoading = false;
-                state.error = null;
-                state.movieDetails = payload;
-            })
-            .addCase(getAllGenresThunk.fulfilled, (state, {payload}) => {
-                state.isLoading = false;
-                state.error = null;
-                state.genreItems = payload.genres;
-            })
+            .addCase(getAllMoviesThunk.fulfilled, handleFulfilledMovies)
+            .addCase(getMoviesByGenreThunk.fulfilled, handleFulfilledMovies)
+            .addCase(getMoviesBySearchThunk.fulfilled, handleFulfilledMovies)
+            .addCase(getMovieDetailsThunk.fulfilled, handleFulfilledDetails)
             // Rejected
-            .addCase(getAllGenresThunk.rejected, (state, {payload}) => {
-                state.isLoading = false;
-                state.error = payload;
-            })
-            .addCase(getAllMoviesThunk.rejected, (state, {payload}) => {
-                state.isLoading = false;
-                state.error = payload;
-            })
-            .addCase(getMoviesByGenreThunk.rejected, (state, {payload}) => {
-                state.isLoading = false;
-                state.error = payload;
-            })
-            .addCase(getMoviesBySearchThunk.rejected, (state, {payload}) => {
-                state.isLoading = false;
-                state.error = payload;
-            })
-            .addCase(getMovieDetailsThunk.rejected, (state, {payload}) => {
-                state.isLoading = false;
-                state.error = payload;
-            });
+            .addCase(getAllMoviesThunk.rejected, handleRejected)
+            .addCase(getMoviesByGenreThunk.rejected, handleRejected)
+            .addCase(getMoviesBySearchThunk.rejected, handleRejected)
+            .addCase(getMovieDetailsThunk.rejected, handleRejected);
     },
 });
 
