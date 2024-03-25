@@ -28,14 +28,13 @@ export default function SearchPage() {
     const search = pathname.split('/')[pathname.split('/').length - 1];
 
     useEffect(() => {
+        setParamsPage({page: page.toString()});
         resPage && setPage(1);
-    }, [resPage]);
+    }, [resPage, page, setParamsPage]);
 
     useEffect(() => {
-        setParamsPage({page: page.toString()});
-
         dispatch(getMoviesBySearchThunk({search, page}));
-    }, [dispatch, search, setParamsPage, page]);
+    }, [dispatch, search, page]);
 
     return (
         <>

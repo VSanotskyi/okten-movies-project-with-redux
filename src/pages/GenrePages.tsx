@@ -28,14 +28,14 @@ export default function GenrePages() {
     const genreId = pathname.split('/')[pathname.split('/').length - 1];
 
     useEffect(() => {
-        resPage && setPage(1);
-    }, [resPage]);
-
-    useEffect(() => {
         setParamsPage({page: page.toString()});
 
+        resPage && setPage(1);
+    }, [resPage, setParamsPage, page]);
+
+    useEffect(() => {
         dispatch(getMoviesByGenreThunk({genreId, page}));
-    }, [dispatch, genreId, setParamsPage, page]);
+    }, [dispatch, genreId, page]);
 
     return (
         <>

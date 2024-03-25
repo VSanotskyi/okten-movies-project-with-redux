@@ -16,14 +16,16 @@ export default function MoviePages() {
 
     const handleChange = (_: ChangeEvent<unknown>, value: number) => {
         setPage(value);
+
     };
+    useEffect(() => {
+        setParamsPage({page: page.toString()});
+    }, [setParamsPage, page]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        setParamsPage({page: page.toString()});
-
         dispatch(getAllMoviesThunk({page}));
-    }, [dispatch, page, setParamsPage]);
+    }, [dispatch, page]);
 
     return (
         <>

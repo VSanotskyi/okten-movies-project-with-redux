@@ -5,7 +5,7 @@ import {useTheme} from '../hooks';
 
 import css from './theme.module.css';
 
-export default function Layout() {
+export default function MainLayout() {
     const theme = useTheme().theme;
     const currentTheme = theme ? 'dark-theme' : 'light-theme';
 

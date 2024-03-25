@@ -3,7 +3,7 @@ import {Navigate, Route, Routes} from 'react-router-dom';
 
 import {Loading} from './components';
 
-const Layout = lazy(() => import('./layout/Layout'));
+const Layout = lazy(() => import('./layout/MainLayout'));
 const MoviePages = lazy(() => import('./pages/MoviePages'));
 const GenrePages = lazy(() => import('./pages/GenrePages'));
 const SearchPage = lazy(() => import('./pages/SearchPage'));
@@ -14,15 +14,15 @@ const App = () => {
     return (
         <Suspense fallback={<Loading/>}>
             <Routes>
+                <Route path={'/'}
+                       element={<Navigate to={'/movies'}/>}
+                />
                 <Route
-                    path="/"
+                    path="/movies"
                     element={<Layout/>}
                 >
-                    <Route index
-                           element={<Navigate to={'/movies'}/>}
-                    />
                     <Route
-                        path={'/movies'}
+                        index
                         element={<MoviePages/>}
                     />
                     <Route path={'/movies/genre/:name/:id'}

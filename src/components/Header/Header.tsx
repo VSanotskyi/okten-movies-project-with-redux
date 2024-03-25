@@ -1,4 +1,4 @@
-import {ChangeEvent, useEffect, useState} from 'react';
+import {ChangeEvent, useEffect, useState, KeyboardEvent} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 
 import {
@@ -44,6 +44,14 @@ const Header = () => {
         setSearch('');
     };
 
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopPropagation();
+            handleSubmit();
+        }
+    };
+
     const handleChangeTheme = () => {
         dispatch(toggleTheme());
     };
@@ -65,7 +73,7 @@ const Header = () => {
                                 sx={{flexGrow: 1}}
                     >
                         <Link className={css[currentTheme]}
-                              to={'/'}
+                              to={'/movies'}
                         >Movies</Link>
                     </Typography>
                     <Button onClick={toggleSearch}>
@@ -100,6 +108,7 @@ const Header = () => {
                             autoFocus={true}
                             onChange={handleChange}
                             value={search}
+                            onKeyDown={handleKeyDown}
                         />
                         <IconButton type="button"
                                     sx={{p: '10px'}}

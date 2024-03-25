@@ -31,7 +31,7 @@ const handlePendingMovies = (state: IState) => {
     state.error = null;
     state.isLoading = true;
     state.movieItems = [];
-    state.togglePage = null;
+    state.total_page = null;
 };
 
 const handleFulfilledMovies = (state: IState, action: PayloadAction<IMoviesRes>) => {
