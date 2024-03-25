@@ -25,13 +25,13 @@ const App = () => {
                         index
                         element={<MoviePages/>}
                     />
-                    <Route path={'/movies/genre/:name/:id'}
+                    <Route path={'genre/:name/:id'}
                            element={<GenrePages/>}
                     />
-                    <Route path={'/movies/search/:searchName'}
+                    <Route path={'search/:searchName'}
                            element={<SearchPage/>}
                     />
-                    <Route path={'/movies/details/:id'}
+                    <Route path={'details/:id'}
                            element={<DetailsPages/>}
                     />
                 </Route>

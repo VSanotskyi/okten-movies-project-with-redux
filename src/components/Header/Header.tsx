@@ -40,7 +40,7 @@ const Header = () => {
     const handleSubmit = () => {
         if (search.length < 1) return;
         dispatch(togglePage(true));
-        navigate(`/movies/search/${search}`);
+        navigate(`search/${search}`);
         setSearch('');
     };
 

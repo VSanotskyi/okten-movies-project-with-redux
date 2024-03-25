@@ -17,7 +17,7 @@ const GenreItem: FC<IProps> = ({genre}) => {
 
     const handleClick = (name: string, id: number) => {
         dispatch(togglePage(true));
-        navigate(`/movies/genre/${name.toLowerCase()}/${id}`);
+        navigate(`genre/${name.toLowerCase()}/${id}`);
     };
 
     return (

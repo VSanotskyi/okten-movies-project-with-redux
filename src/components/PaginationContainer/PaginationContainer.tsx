@@ -16,7 +16,7 @@ interface IProps {
 const PaginationContainer: FC<IProps> = ({totalPage, page, setPage}) => {
     const dispatch = useAppDispatch();
     const {pathname} = useLocation();
-    
+
     const resPage = useMovies().resPage;
 
     const theme = useTheme().theme;
@@ -36,8 +36,6 @@ const PaginationContainer: FC<IProps> = ({totalPage, page, setPage}) => {
                     count={totalPage < 500 ? totalPage : 500}
                     page={page}
                     onChange={handleChange}
-                    showFirstButton
-                    showLastButton
                     renderItem={(item) => (
                         <PaginationItem
                             component={Link}
