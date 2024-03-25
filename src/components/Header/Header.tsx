@@ -73,7 +73,7 @@ const Header = () => {
                                 sx={{flexGrow: 1}}
                     >
                         <Link className={css[currentTheme]}
-                              to={'/movies'}
+                              to={'/'}
                         >Movies</Link>
                     </Typography>
                     <Button onClick={toggleSearch}>

@@ -1,15 +1,14 @@
-import {ChangeEvent, useEffect, useState} from 'react';
-import {useLocation, useSearchParams} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useLocation} from 'react-router-dom';
 
 import {Error, List, MovieItem, PaginationContainer} from '../components';
 import {useAppDispatch, useMovies} from '../hooks';
 import {
     getMoviesByGenreThunk,
-    togglePage,
 } from '../store/movies';
 
 export default function GenrePages() {
-    const {pathname} = useLocation();
+    const {pathname, search: localPage} = useLocation();
     const dispatch = useAppDispatch();
 
     const movies = useMovies().items;
@@ -17,25 +16,14 @@ export default function GenrePages() {
     const resPage = useMovies().resPage;
     const error = useMovies().error;
 
-    const [paramsPage, setParamsPage] = useSearchParams({page: '1'});
-    const [page, setPage] = useState(+(paramsPage.get('page')));
-
-    const handleChange = (_: ChangeEvent<unknown>, value: number) => {
-        dispatch(togglePage(false));
-        setPage(value);
-    };
+    const [page, setPage] = useState(parseInt(localPage.split('=')[1]) || 1);
+    const currentPage = resPage ? 1 : page;
 
     const genreId = pathname.split('/')[pathname.split('/').length - 1];
 
     useEffect(() => {
-        setParamsPage({page: page.toString()});
-
-        resPage && setPage(1);
-    }, [resPage, setParamsPage, page]);
-
-    useEffect(() => {
-        dispatch(getMoviesByGenreThunk({genreId, page}));
-    }, [dispatch, genreId, page]);
+        dispatch(getMoviesByGenreThunk({genreId, page: currentPage}));
+    }, [dispatch, genreId, currentPage]);
 
     return (
         <>
@@ -50,8 +38,8 @@ export default function GenrePages() {
             {totalPage &&
                 <PaginationContainer
                     totalPage={totalPage}
-                    page={page}
-                    handleChange={handleChange}
+                    page={currentPage}
+                    setPage={setPage}
                 />
             }
             {

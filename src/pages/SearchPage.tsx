@@ -1,14 +1,14 @@
-import {ChangeEvent, useEffect, useState} from 'react';
-import {useLocation, useSearchParams} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useLocation} from 'react-router-dom';
 
 import {useAppDispatch, useMovies} from '../hooks';
 import {
-    getMoviesBySearchThunk, togglePage,
+    getMoviesBySearchThunk,
 } from '../store/movies';
 import {Error, List, MovieItem, PaginationContainer} from '../components';
 
 export default function SearchPage() {
-    const {pathname} = useLocation();
+    const {pathname, search: localPage} = useLocation();
     const dispatch = useAppDispatch();
 
     const movies = useMovies().items;
@@ -17,24 +17,14 @@ export default function SearchPage() {
     const error = useMovies().error;
     const isLoading = useMovies().isLoading;
 
-    const [paramsPage, setParamsPage] = useSearchParams({page: '1'});
-    const [page, setPage] = useState(+(paramsPage.get('page')));
-
-    const handleChange = (_: ChangeEvent<unknown>, value: number) => {
-        dispatch(togglePage(false));
-        setPage(value);
-    };
+    const [page, setPage] = useState(parseInt(localPage.split('=')[1]) || 1);
+    const currentPage = resPage ? 1 : page;
 
     const search = pathname.split('/')[pathname.split('/').length - 1];
 
     useEffect(() => {
-        setParamsPage({page: page.toString()});
-        resPage && setPage(1);
-    }, [resPage, page, setParamsPage]);
-
-    useEffect(() => {
-        dispatch(getMoviesBySearchThunk({search, page}));
-    }, [dispatch, search, page]);
+        dispatch(getMoviesBySearchThunk({search, page: currentPage}));
+    }, [dispatch, search, currentPage]);
 
     return (
         <>
@@ -49,8 +39,8 @@ export default function SearchPage() {
             {totalPage > 1 &&
                 <PaginationContainer
                     totalPage={totalPage}
-                    page={page}
-                    handleChange={handleChange}
+                    page={currentPage}
+                    setPage={setPage}
                 />
             }
             {

@@ -5,7 +5,7 @@
     padding: 20px;
 }
 
-.dark-theme ul li button {
+.dark-theme ul li a {
     color: #ffffff;
 }
 
@@ -16,6 +16,6 @@
     padding: 20px;
 }
 
-.light-theme ul li button {
+.light-theme ul li a {
     color: #161515;;
 }

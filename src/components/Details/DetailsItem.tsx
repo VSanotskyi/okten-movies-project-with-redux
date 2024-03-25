@@ -8,6 +8,7 @@ import {
     Rating,
 } from '@mui/material';
 
+import {useTheme} from '../../hooks';
 import {IDetails, IGenre} from '../../interfaces';
 import {List, GenreItem} from '../../components';
 import {defaultUrlImage} from '../../constants';
@@ -21,6 +22,9 @@ interface IProps {
 const DetailsItem: FC<IProps> = ({item}) => {
     const urlImg = defaultUrlImage + item?.poster_path;
     const checkUrl = urlImg.split('/').slice(-1).toString() === 'null';
+
+    const theme = useTheme().theme;
+    const currentTheme = theme ? 'dark-theme' : 'light-theme';
 
     return (
         <div className={css.wrapper}>
@@ -45,9 +49,9 @@ const DetailsItem: FC<IProps> = ({item}) => {
                         />}
                     </div>
                 </div>
-                <CardContent>
+                <CardContent className={css[currentTheme]}>
                     <Typography variant="body2"
-                                color="text.secondary"
+                                color="inherit"
                     >
                         <Rating name="read-only"
                                 value={item?.vote_average ? item?.vote_average / 2 : 0}

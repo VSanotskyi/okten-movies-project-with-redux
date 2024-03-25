@@ -5,3 +5,13 @@
     text-overflow: ellipsis;
     width: 150px;
 }
+
+.dark-theme {
+    color: #fff;
+    background-color: #323131FF;
+}
+
+.light-theme {
+    color: #323131FF;
+    background-color: #fff;
+}

@@ -13,6 +13,7 @@ import {IMovie} from '../../interfaces';
 import defaultImage from '../../defaultImage/default-image.jpg';
 import {defaultUrlImage} from '../../constants';
 import css from './MovieItem.module.css';
+import {useTheme} from '../../hooks';
 
 interface IProps {
     item: IMovie;
@@ -31,6 +32,9 @@ const MovieItem: FC<IProps> = ({item}) => {
         navigate(`/movies/details/${id}`);
     };
 
+    const theme = useTheme().theme;
+    const currentTheme = theme ? 'dark-theme' : 'light-theme';
+
     return (
         <li>
             <Card sx={{width: 300, height: 400}}
@@ -42,7 +46,7 @@ const MovieItem: FC<IProps> = ({item}) => {
                     height="300"
                     image={!checkUrl ? urlImg : defaultImage}
                 />
-                <CardContent>
+                <CardContent className={css[currentTheme]}>
                     <Typography gutterBottom
                                 variant="h6"
                                 component="div"

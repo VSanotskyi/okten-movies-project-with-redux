@@ -1,29 +1,21 @@
-import {ChangeEvent, useEffect, useState} from 'react';
-import {useSearchParams} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useLocation} from 'react-router-dom';
 
 import {getAllMoviesThunk} from '../store/movies';
 import {useAppDispatch, useMovies} from '../hooks';
-import {List, MovieItem, PaginationContainer, Error} from '../components';
+import {List, MovieItem, Error, PaginationContainer} from '../components';
 
 export default function MoviePages() {
+    const {search: localPage} = useLocation();
     const dispatch = useAppDispatch();
+
     const movies = useMovies().items;
     const totalPage = useMovies().totalPage;
     const error = useMovies().error;
 
-    const [paramsPage, setParamsPage] = useSearchParams({page: '1'});
-    const [page, setPage] = useState(+(paramsPage.get('page')));
-
-    const handleChange = (_: ChangeEvent<unknown>, value: number) => {
-        setPage(value);
-
-    };
-    useEffect(() => {
-        setParamsPage({page: page.toString()});
-    }, [setParamsPage, page]);
+    const [page, setPage] = useState(parseInt(localPage.split('=')[1]) || 1);
 
     useEffect(() => {
-        window.scrollTo(0, 0);
         dispatch(getAllMoviesThunk({page}));
     }, [dispatch, page]);
 
@@ -37,11 +29,11 @@ export default function MoviePages() {
                           />}
                 />
             }
-            {totalPage &&
+            {totalPage > 1 &&
                 <PaginationContainer
                     totalPage={totalPage}
                     page={page}
-                    handleChange={handleChange}
+                    setPage={setPage}
                 />
             }
             {
@@ -50,7 +42,4 @@ export default function MoviePages() {
         </>
     );
 };
-
-
-
 
