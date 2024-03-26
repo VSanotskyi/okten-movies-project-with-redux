@@ -10,10 +10,12 @@ import {
 } from '@mui/material';
 
 import {IMovie} from '../../interfaces';
-import defaultImage from '../../defaultImage/default-image.jpg';
 import {defaultUrlImage} from '../../constants';
+import {useAppDispatch, useSearchToggle, useTheme} from '../../hooks';
+import {toggleShowSearch} from '../../store/search';
+
+import defaultImage from '../../defaultImage/default-image.jpg';
 import css from './MovieItem.module.css';
-import {useTheme} from '../../hooks';
 
 interface IProps {
     item: IMovie;
@@ -21,6 +23,7 @@ interface IProps {
 
 const MovieItem: FC<IProps> = ({item}) => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const {title, poster_path, vote_average, id} = item;
 
@@ -28,7 +31,10 @@ const MovieItem: FC<IProps> = ({item}) => {
 
     const checkUrl = urlImg.split('/').slice(-1).toString() === 'null';
 
+    const showSearch = useSearchToggle().searchToggle;
+
     const handleClick = () => {
+        showSearch && dispatch(toggleShowSearch());
         navigate(`/movies/details/${id}`);
     };
 

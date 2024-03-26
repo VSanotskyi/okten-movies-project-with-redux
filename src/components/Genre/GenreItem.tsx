@@ -13,8 +13,8 @@ interface IProps {
 }
 
 const GenreItem: FC<IProps> = ({genre}) => {
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const showSearch = useSearchToggle().searchToggle;
 
