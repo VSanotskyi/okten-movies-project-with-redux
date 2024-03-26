@@ -14,11 +14,12 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchIcon from '@mui/icons-material/Search';
 
 import {IGenre} from '../../interfaces';
-import {useAppDispatch, useGenres, useTheme} from '../../hooks';
+import {useAppDispatch, useGenres, useSearchToggle, useTheme} from '../../hooks';
 import {List, GenreItem} from '../../components';
 import {togglePage} from '../../store/movies';
 import {toggleTheme} from '../../store/theme';
 import {getAllGenresThunk} from '../../store/genres';
+import {toggleShowSearch} from '../../store/search';
 import css from './Header.module.css';
 
 const Header = () => {
@@ -27,7 +28,7 @@ const Header = () => {
 
     const genres = useGenres().items;
 
-    const [showSearch, setShowSearch] = useState(false);
+    const showSearch = useSearchToggle().searchToggle;
     const [search, setSearch] = useState<string>('');
 
     const theme = useTheme().theme;
@@ -52,12 +53,16 @@ const Header = () => {
         }
     };
 
-    const handleChangeTheme = () => {
-        dispatch(toggleTheme());
+    const toggleSearch = () => {
+        dispatch(toggleShowSearch());
     };
 
-    const toggleSearch = () => {
-        setShowSearch(prev => !prev);
+    const handleClickHome = () => {
+        showSearch && dispatch(toggleShowSearch());
+    };
+
+    const handleChangeTheme = () => {
+        dispatch(toggleTheme());
     };
 
     useEffect(() => {
@@ -74,6 +79,7 @@ const Header = () => {
                     >
                         <Link className={css[currentTheme]}
                               to={'/'}
+                              onClick={handleClickHome}
                         >Movies</Link>
                     </Typography>
                     <Button onClick={toggleSearch}>

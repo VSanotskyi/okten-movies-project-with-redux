@@ -12,6 +12,7 @@ import {
 import {moviesReducer} from './movies';
 import {genresReducer} from './genres';
 import {themeReducer} from './theme';
+import {searchReducer} from './search';
 
 const persistConfig = {
     key: 'theme',
@@ -25,6 +26,7 @@ const store = configureStore({
         movies: moviesReducer,
         genres: genresReducer,
         theme: persistedReducer,
+        search: searchReducer,
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
