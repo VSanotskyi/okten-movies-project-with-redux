@@ -33,6 +33,7 @@ const PaginationContainer: FC<IProps> = ({totalPage, page, setPage}) => {
         <Box className={css[currentTheme]}>
             <Stack spacing={2}>
                 <Pagination
+                    color={'primary'}
                     count={totalPage < 500 ? totalPage : 500}
                     page={page}
                     onChange={handleChange}
